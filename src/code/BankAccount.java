@@ -6,7 +6,7 @@ public class BankAccount
     public BankAccount(String accountNumber, int i)
     {
         this.accountNumber = accountNumber;
-        this.balanceUsd = 0;
+        this.balanceUsd = i;
     }
 
     public String getAccountNumber()
@@ -21,16 +21,21 @@ public class BankAccount
 
     public void deposit(int depositeAmount)
     {
-        depositeAmount += balanceUsd;
+        balanceUsd += depositeAmount;
     }
 
     public void withdraw(int withdrawAmount)
     {
-        withdrawAmount -= balanceUsd;
+        if(balanceUsd < withdrawAmount)
+        {
+            throw new IllegalArgumentException("Insufficient funds");
+        }
+        balanceUsd -= withdrawAmount;
     }
 
-    public void transferToBank(BankAccount account2, String number, int i)
+    public void transferToBank(BankAccount account2, String number, int amount)
     {
-
+        this.withdraw(amount);
+        account2.deposit(amount);
     }
 }

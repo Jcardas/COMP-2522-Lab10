@@ -15,7 +15,7 @@ public class Bank
         bankAccounts.add(newAccount);
     }
 
-    public BankAccount retrieveAccount(String number)
+    public BankAccount retrieveAccount(final String number)
     {
         for(BankAccount account : bankAccounts)
         {
@@ -24,7 +24,7 @@ public class Bank
                 return account;
             }
         }
-        return null;
+        throw new IllegalArgumentException("Account not found");
     }
 
     public int totalBalanceUsd()
