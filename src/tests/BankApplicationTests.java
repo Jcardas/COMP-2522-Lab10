@@ -117,7 +117,7 @@ public class BankApplicationTests
     void ensureAccountNumberWhenTransferring()
     {
         IllegalArgumentException exception1 = assertThrows(IllegalArgumentException.class, () -> account1.transferToBank(account2, "54321", 200));
-        assertEquals("Invalid Account Number", exception1.getMessage());
+        assertEquals("Invalid account number", exception1.getMessage());
         assertEquals(500, account2.getBalanceUsd());
 
         IllegalArgumentException exception2 = assertThrows(IllegalArgumentException.class, () -> account1.transferToBank(account2, "", 200));
@@ -125,8 +125,23 @@ public class BankApplicationTests
         assertEquals(500, account2.getBalanceUsd());
     }
 
-// Additional tests can include:
-// - Checking the initial balance correctness.
-// - Handling invalid operations.
-// - Summing balances from multiple accounts in a single bank.
+    @Test
+    void accountNumberContainsSpecialCharacters()
+    {
+        IllegalArgumentException exception1 = assertThrows(IllegalArgumentException.class, () -> new BankAccount("1234!"));
+        assertEquals("Account number cannot contain special characters", exception1.getMessage());
+    }
+
+    @Test
+    void newBankInitialValue()
+    {
+        Bank b1 = new Bank();
+        assertEquals(0, b1.totalBalanceUsd());
+    }
+
+    @Test
+    void bankAccountToString()
+    {
+        assertEquals("BankAccount{" + "balanceUsd=" + account1.getBalanceUsd() + ", accountNumber=" + account1.getAccountNumber() + '}', account1.toString());
+    }
 }
