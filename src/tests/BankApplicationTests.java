@@ -97,13 +97,17 @@ public class BankApplicationTests
     {
         IllegalArgumentException exception1 = assertThrows(IllegalArgumentException.class, () -> account1.deposit(-1));
         assertEquals("Deposit value cannot be negative", exception1.getMessage());
+        IllegalArgumentException exception2 = assertThrows(IllegalArgumentException.class, () -> account2.deposit(-100));
+        assertEquals("Deposit value cannot be negative", exception2.getMessage());
     }
 
     @Test
     void blankAccountNumber()
     {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new BankAccount("", 0));
-        assertEquals("Account number cannot be blank", exception.getMessage());
+        IllegalArgumentException exception1 = assertThrows(IllegalArgumentException.class, () -> new BankAccount("", 0));
+        assertEquals("Account number cannot be blank", exception1.getMessage());
+        IllegalArgumentException exception2 = assertThrows(IllegalArgumentException.class, () -> new BankAccount(" ", 0));
+        assertEquals("Account number cannot be blank", exception2.getMessage());
     }
 
     @Test
@@ -111,6 +115,8 @@ public class BankApplicationTests
     {
         BankAccount newAccountWithZeroDollars = new BankAccount("13579");
         assertEquals(0, newAccountWithZeroDollars.getBalanceUsd());
+        BankAccount newAccountWithZeroDollars2 = new BankAccount("5973534", 0);
+        assertEquals(0, newAccountWithZeroDollars2.getBalanceUsd());
     }
 
     @Test
@@ -130,6 +136,8 @@ public class BankApplicationTests
     {
         IllegalArgumentException exception1 = assertThrows(IllegalArgumentException.class, () -> new BankAccount("1234!"));
         assertEquals("Account number cannot contain special characters", exception1.getMessage());
+        IllegalArgumentException exception2 = assertThrows(IllegalArgumentException.class, () -> new BankAccount("12345___123🙂"));
+        assertEquals("Account number cannot contain special characters", exception2.getMessage());
     }
 
     @Test
@@ -137,11 +145,15 @@ public class BankApplicationTests
     {
         Bank b1 = new Bank();
         assertEquals(0, b1.totalBalanceUsd());
+
+        Bank b2 = new Bank();
+        assertEquals(0, b2.totalBalanceUsd());
     }
 
     @Test
     void bankAccountToString()
     {
         assertEquals("BankAccount{" + "balanceUsd=" + account1.getBalanceUsd() + ", accountNumber=" + account1.getAccountNumber() + '}', account1.toString());
+        assertEquals("BankAccount{" + "balanceUsd=" + account2.getBalanceUsd() + ", accountNumber=" + account2.getAccountNumber() + '}', account2.toString());
     }
 }
