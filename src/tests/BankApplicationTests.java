@@ -100,7 +100,7 @@ public class BankApplicationTests
     }
 
     @Test
-    void invalidAccountNumber()
+    void blankAccountNumber()
     {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new BankAccount("", 0));
         assertEquals("Account number cannot be blank", exception.getMessage());
