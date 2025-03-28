@@ -5,43 +5,40 @@ import org.junit.jupiter.api.Test;
 
 public class BankApplicationTests
 {
-    public class BankApplicationTests
+    private Bank        bank1;
+    private Bank        bank2;
+    private BankAccount account1;
+    private BankAccount account2;
+
+    @BeforeEach
+    void setUp()
     {
-        private Bank        bank1;
-        private Bank        bank2;
-        private BankAccount account1;
-        private BankAccount account2;
+        bank1    = new Bank();
+        bank2    = new Bank();
+        account1 = new BankAccount("12345", 1000);
+        account2 = new BankAccount("67890", 500);
+        bank1.addAccount(account1);
+        bank2.addAccount(account2);
+    }
 
-        @BeforeEach
-        void setUp()
-        {
-            bank1    = new Bank();
-            bank2    = new Bank();
-            account1 = new BankAccount("12345", 1000);
-            account2 = new BankAccount("67890", 500);
-            bank1.addAccount(account1);
-            bank2.addAccount(account2);
-        }
+    @Test
+    void depositIncreasesBalanceAndVerify()
+    {
+        account1.deposit(200);
+        assertEquals(1200, account1.getBalanceUsd());
+        account2.deposit(300);
+        assertEquals(800, account2.getBalanceUsd());
+    }
 
-        @Test
-        void depositIncreasesBalanceAndVerify()
-        {
-            account1.deposit(200);
-            assertEquals(1200, account1.getBalanceUsd());
-            account2.deposit(300);
-            assertEquals(800, account2.getBalanceUsd());
-        }
+    @Test
+    void withdrawDecreasesBalanceAndVerify()
+    {
+        account1.withdraw(200);
+        assertEquals(800, account1.getBalanceUsd());
 
-        @Test
-        void withdrawDecreasesBalanceAndVerify()
-        {
-            account1.withdraw(200);
-            assertEquals(800, account1.getBalanceUsd());
-
-        }
         account2.withdraw(100);
 
-        assertEquals(400,account2.getBalanceUsd());
+        assertEquals(400, account2.getBalanceUsd());
     }
 
     @Test
@@ -92,8 +89,8 @@ public class BankApplicationTests
         IllegalArgumentException exception2 = assertThrows(IllegalArgumentException.class, () -> bank2.retrieveAccount("00000"));
         assertEquals("Account not found", exception2.getMessage());
     }
-    // Additional tests can include:
-    // - Checking the initial balance correctness.
-    // - Handling invalid operations.
-    // - Summing balances from multiple accounts in a single bank.
+// Additional tests can include:
+// - Checking the initial balance correctness.
+// - Handling invalid operations.
+// - Summing balances from multiple accounts in a single bank.
 }
