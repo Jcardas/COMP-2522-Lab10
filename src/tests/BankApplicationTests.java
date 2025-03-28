@@ -89,6 +89,40 @@ public class BankApplicationTests
         IllegalArgumentException exception2 = assertThrows(IllegalArgumentException.class, () -> bank2.retrieveAccount("00000"));
         assertEquals("Account not found", exception2.getMessage());
     }
+
+    // Our tests
+
+    @Test
+    void depositNegativeAmount()
+    {
+        IllegalArgumentException exception1 = assertThrows(IllegalArgumentException.class, () -> account1.deposit(-1));
+        assertEquals("Deposit value cannot be negative", exception1.getMessage());
+    }
+
+    @Test
+    void invalidAccountNumber()
+    {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new BankAccount("", 0));
+        assertEquals("Account number cannot be blank", exception.getMessage());
+    }
+
+    @Test
+    void newAccountWithZeroDollars()
+    {
+        BankAccount newAccountWithZeroDollars = new BankAccount("13579");
+        assertEquals(0, newAccountWithZeroDollars.getBalanceUsd());
+    }
+
+    @Test
+    void ensureAccountNumberWhenTransferring()
+    {
+        IllegalArgumentException exception1 = assertThrows(IllegalArgumentException.class, () -> account1.transferToBank(account2, "54321", 200));
+        assertEquals("Invalid Account Number", exception1.getMessage());
+
+        IllegalArgumentException exception2 = assertThrows(IllegalArgumentException.class, () -> account1.transferToBank(account2, "", 200));
+        assertEquals("Account number cannot be blank", exception2.getMessage());
+    }
+
 // Additional tests can include:
 // - Checking the initial balance correctness.
 // - Handling invalid operations.

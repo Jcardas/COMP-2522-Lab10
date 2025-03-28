@@ -8,7 +8,7 @@ public class Bank
 
     public Bank()
     {
-        bankAccounts = new ArrayList<BankAccount>();
+        bankAccounts = new ArrayList<>();
     }
     public void addAccount(BankAccount newAccount)
     {

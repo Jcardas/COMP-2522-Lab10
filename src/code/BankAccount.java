@@ -1,12 +1,33 @@
 public class BankAccount
 {
-    private int balanceUsd;
-    private final String accountNumber;
+    public static final int INIT_BALANCE_USD = 0;
+    public static final int MINIMUM_BALANCE_USD = 0;
+    private             int    balanceUsd;
+    private final       String accountNumber;
 
-    public BankAccount(String accountNumber, int i)
+    public BankAccount(final String accountNumber, final int amountUsd)
     {
+        verifyAccountNumber(accountNumber);
+
         this.accountNumber = accountNumber;
-        this.balanceUsd = i;
+        this.balanceUsd    = amountUsd;
+    }
+
+    // Overloaded constructor for account with 0 dollars.
+    public BankAccount(final String accountNumber)
+    {
+        verifyAccountNumber(accountNumber);
+        this.accountNumber = accountNumber;
+
+        this.balanceUsd = INIT_BALANCE_USD;
+    }
+
+    private void verifyAccountNumber(final String accountNumber)
+    {
+        if(accountNumber.isBlank())
+        {
+            throw new IllegalArgumentException("Account number cannot be blank");
+        }
     }
 
     public String getAccountNumber()
@@ -19,12 +40,16 @@ public class BankAccount
         return balanceUsd;
     }
 
-    public void deposit(int depositeAmount)
+    public void deposit(final int depositAmount)
     {
-        balanceUsd += depositeAmount;
+        if(depositAmount < MINIMUM_BALANCE_USD)
+        {
+            throw new IllegalArgumentException("Deposit value cannot be negative");
+        }
+        balanceUsd += depositAmount;
     }
 
-    public void withdraw(int withdrawAmount)
+    public void withdraw(final int withdrawAmount)
     {
         if(balanceUsd < withdrawAmount)
         {
@@ -33,8 +58,17 @@ public class BankAccount
         balanceUsd -= withdrawAmount;
     }
 
-    public void transferToBank(BankAccount account2, String number, int amount)
+    public void transferToBank(final BankAccount account2, final String accountNumber, final int amount)
     {
+        if(accountNumber == null || accountNumber.isBlank())
+        {
+            throw new IllegalArgumentException("Account number cannot be blank");
+        }
+        if(!accountNumber.equals(this.accountNumber))
+        {
+            throw new IllegalArgumentException("Invalid Account Number");
+        }
+
         this.withdraw(amount);
         account2.deposit(amount);
     }
