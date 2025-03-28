@@ -118,9 +118,11 @@ public class BankApplicationTests
     {
         IllegalArgumentException exception1 = assertThrows(IllegalArgumentException.class, () -> account1.transferToBank(account2, "54321", 200));
         assertEquals("Invalid Account Number", exception1.getMessage());
+        assertEquals(500, account2.getBalanceUsd());
 
         IllegalArgumentException exception2 = assertThrows(IllegalArgumentException.class, () -> account1.transferToBank(account2, "", 200));
         assertEquals("Account number cannot be blank", exception2.getMessage());
+        assertEquals(500, account2.getBalanceUsd());
     }
 
 // Additional tests can include:
